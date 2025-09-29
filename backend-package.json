@@ -1,0 +1,17 @@
+{
+  "name": "shelfsense-backend",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "ShelfSense Backend with SQLite Database",
+  "main": "backend-sqlite.js",
+  "scripts": {
+    "start": "node backend-sqlite.js",
+    "dev": "node --watch backend-sqlite.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.6",
+    "sqlite": "^5.1.1"
+  }
+}

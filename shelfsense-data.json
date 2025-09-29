@@ -1,0 +1,79 @@
+{
+  "products": [
+    {
+      "id": "17587723986139t6rr2e8v",
+      "name": "rack",
+      "barcode": "123",
+      "count": 7,
+      "expiry": "2025-09-26",
+      "price": 124,
+      "discountedPrice": null,
+      "category": "Uncategorized",
+      "description": "",
+      "status": "expired",
+      "freshness": "Fresh",
+      "createdAt": "2025-09-25T03:53:18.614Z",
+      "updatedAt": "2025-09-27T17:16:25.077Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "17587723986147vnlv0anv",
+      "name": "Uncategorized",
+      "icon": "📦",
+      "totalItems": 1,
+      "expiringItems": 1
+    }
+  ],
+  "wholesaleBoxes": [],
+  "suppliers": [],
+  "sales": [
+    {
+      "id": "1758772441333z1daolhpi",
+      "productId": "17587723986139t6rr2e8v",
+      "productName": "rack",
+      "quantity": 1,
+      "unitPrice": 124,
+      "totalPrice": 124,
+      "paymentMethod": "cash",
+      "timestamp": "2025-09-25T03:54:01.333Z"
+    },
+    {
+      "id": "17589933850778y4egfuj2",
+      "productId": "17587723986139t6rr2e8v",
+      "productName": "rack",
+      "quantity": 1,
+      "unitPrice": 124,
+      "totalPrice": 124,
+      "paymentMethod": "cash",
+      "timestamp": "2025-09-27T17:16:25.077Z"
+    }
+  ],
+  "alerts": [],
+  "sensors": [],
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "password",
+      "role": "admin",
+      "isActive": true,
+      "createdAt": "2025-09-25T03:45:32.964Z",
+      "lastLogin": null
+    },
+    {
+      "id": "1758993343304s0uvoinxa",
+      "username": "Akash",
+      "password": "akash",
+      "role": "admin",
+      "isActive": true,
+      "createdAt": "2025-09-27T17:15:43.304Z",
+      "lastLogin": "2025-09-27T18:27:40.798Z"
+    }
+  ],
+  "settings": {
+    "currency": "₹",
+    "lowStockThreshold": 10,
+    "expiryWarningDays": 3
+  }
+}
