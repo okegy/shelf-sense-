@@ -89,7 +89,12 @@ export default function Header({ user, onLogout, onToggleSidebar, unreadAlerts }
             </div>
             <div className="text-white">
               <div className="font-medium text-sm">{user.username}</div>
-              <div className="text-xs text-white/70 capitalize">{user.role}</div>
+              <div className="text-sm text-gray-100 capitalize">
+                {user.role === 'admin' ? 'Administrator' : 
+                 user.role === 'manager' ? 'Manager' : 
+                 user.role === 'staff' ? 'Staff' : 
+                 user.role || 'User'}
+              </div>
             </div>
           </div>
 
@@ -100,6 +105,12 @@ export default function Header({ user, onLogout, onToggleSidebar, unreadAlerts }
             </div>
             <div className="text-white">
               <div className="font-medium text-xs">{user.username}</div>
+              <div className="text-[10px] text-gray-100 capitalize">
+                {user.role === 'admin' ? 'Admin' : 
+                 user.role === 'manager' ? 'Manager' : 
+                 user.role === 'staff' ? 'Staff' : 
+                 user.role || 'User'}
+              </div>
             </div>
           </div>
 

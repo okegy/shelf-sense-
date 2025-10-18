@@ -1,0 +1,73 @@
+{
+  "sensorReadings": [
+    {
+      "sensorId": "sensor_1001",
+      "productId": "prod_1001",
+      "readings": [
+        {
+          "timestamp": "2024-03-20T08:00:00Z",
+          "temperature": 3.8,
+          "humidity": 68.2,
+          "ethylene": 0.7,
+          "weight": 25.1,
+          "batteryLevel": 92,
+          "signalStrength": -62
+        },
+        {
+          "timestamp": "2024-03-20T10:00:00Z",
+          "temperature": 4.1,
+          "humidity": 67.5,
+          "ethylene": 0.8,
+          "weight": 24.8,
+          "batteryLevel": 91,
+          "signalStrength": -63
+        },
+        {
+          "timestamp": "2024-03-20T12:00:00Z",
+          "temperature": 4.5,
+          "humidity": 65.8,
+          "ethylene": 0.9,
+          "weight": 23.2,
+          "batteryLevel": 90,
+          "signalStrength": -61
+        }
+      ]
+    },
+    {
+      "sensorId": "sensor_1002",
+      "productId": "prod_1002",
+      "readings": [
+        {
+          "timestamp": "2024-03-20T08:00:00Z",
+          "temperature": 5.2,
+          "humidity": 58.3,
+          "weight": 22.5,
+          "batteryLevel": 88,
+          "signalStrength": -65
+        },
+        {
+          "timestamp": "2024-03-20T10:00:00Z",
+          "temperature": 5.8,
+          "humidity": 56.7,
+          "weight": 20.1,
+          "batteryLevel": 87,
+          "signalStrength": -64
+        }
+      ]
+    },
+    {
+      "sensorId": "sensor_1003",
+      "productId": "prod_1003",
+      "readings": [
+        {
+          "timestamp": "2024-03-20T08:00:00Z",
+          "temperature": 2.8,
+          "humidity": 91.5,
+          "weight": 88.0,
+          "batteryLevel": 85,
+          "signalStrength": -68
+        }
+      ]
+    }
+  ]
+}

@@ -13,8 +13,18 @@ const app = express();
 const PORT = 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
+
+// Add a health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // Database setup
 let db;
@@ -67,6 +77,16 @@ async function initializeDatabase() {
       lastReading DATETIME,
       diagnostics TEXT,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'staff',
+      isActive BOOLEAN DEFAULT 1,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      lastLogin DATETIME
     );
 
     CREATE TABLE IF NOT EXISTS categories (
@@ -160,30 +180,95 @@ function sendResponse(res, statusCode, data) {
 }
 
 // Auth routes
-app.post('/api/auth/login', async (req, res) => {
-  const { username, password } = req.body;
+app.post('/api/auth/register', async (req, res) => {
+  const { username, password, role = 'staff' } = req.body;
   
+  if (!username || !password) {
+    return sendResponse(res, 400, { success: false, error: 'Username and password are required' });
+  }
+
   try {
-    // For demo, accept any username/password
-    const user = {
-      id: '1',
-      username: username || 'demo',
-      role: 'admin',
+    // Check if user already exists
+    const existingUser = await db.get('SELECT * FROM users WHERE username = ?', [username]);
+    if (existingUser) {
+      return sendResponse(res, 400, { success: false, error: 'Username already exists' });
+    }
+
+    // In a real app, you should hash the password before storing it
+    // For demo purposes, we're storing it as-is (NOT RECOMMENDED FOR PRODUCTION)
+    const result = await db.run(
+      'INSERT INTO users (username, password, role, isActive, createdAt, lastLogin) VALUES (?, ?, ?, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)',
+      [username, password, role]
+    );
+
+    const newUser = {
+      id: result.lastID,
+      username,
+      role,
       isActive: true,
       createdAt: new Date().toISOString(),
       lastLogin: new Date().toISOString()
     };
 
+    sendResponse(res, 201, {
+      success: true,
+      message: 'Registration successful',
+      user: newUser
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    sendResponse(res, 500, { 
+      success: false, 
+      error: 'Registration failed',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  const { username, password } = req.body;
+  
+  if (!username || !password) {
+    return sendResponse(res, 400, { success: false, error: 'Username and password are required' });
+  }
+  
+  try {
+    // In a real app, you would verify the hashed password
+    const user = await db.get('SELECT * FROM users WHERE username = ? AND password = ?', [username, password]);
+    
+    if (!user) {
+      return sendResponse(res, 401, { success: false, error: 'Invalid username or password' });
+    }
+
+    if (!user.isActive) {
+      return sendResponse(res, 403, { success: false, error: 'Account is deactivated' });
+    }
+
     // Update last login
-    await db.run('UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE username = ?', [username]);
+    await db.run('UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE id = ?', [user.id]);
+
+    // In a real app, you would generate a proper JWT token
+    const token = `jwt-token-${Date.now()}-${user.id}`;
 
     sendResponse(res, 200, {
       success: true,
-      token: 'mock-jwt-token',
-      user
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        role: user.role,
+        isActive: user.isActive,
+        createdAt: user.createdAt,
+        lastLogin: new Date().toISOString()
+      }
     });
   } catch (error) {
-    sendResponse(res, 500, { success: false, error: error.message });
+    console.error('Login error:', error);
+    sendResponse(res, 500, { 
+      success: false, 
+      error: 'Login failed',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 
